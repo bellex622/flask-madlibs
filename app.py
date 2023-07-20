@@ -3,6 +3,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from stories import silly_story
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "secret"
 
@@ -10,21 +11,23 @@ debug = DebugToolbarExtension(app)
 
 @app.get('/questions')
 def show_prompts():
-    """display the form to fill in"""
-    words = silly_story.prompts
+    """Shows form allowing user to input madlib answers"""
 
-    return render_template("questions.html",words = words)
+    prompts = silly_story.prompts
+
+    return render_template("questions.html", prompts=prompts)
 
 
 @app.get('/results')
 def display_story():
-    """display the form to fill in"""
-    answers = request.args.to_dict()
+    """Displays completed madlib story"""
+
+    answers = request.args
 
     print("ANSWERS >>>>", answers)
 
     story = silly_story.get_result_text(answers)
 
-    return render_template("results.html", story = story)
+    return render_template("results.html", story=story)
 
 
